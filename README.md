@@ -1,3 +1,3 @@
 JGraph
 ======
-This is a simple implementation in C# of a graph for studies.
+This is a simple implementation in Java of a graph for studies.
