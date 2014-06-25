@@ -235,7 +235,84 @@ public class Graph {
     		 }
     	 }
     	 return aux.toString();
-     }     
+     }
+     
+     /**
+      * Returns the Node with the lowest distance and unprocessed.
+      * 
+      * @param l LinkedList<Node> list with all nodes.
+      * @return Node with the lower distance unprocessed.
+      */
+     private Node getLower(LinkedList<Node> l){
+    	 Node lower = null;
+    	 int lowest = 999999999; 
+    	 for(Node a : l){
+    		 if (a.DistanceToMe < lowest && a.mark == 0){
+    			 lower = a;
+    		 }		 
+    	 }
+    	 return lower;
+     }
+     /**
+      * Relaxes a vertex between two nodes.
+      * 
+      * @param u Node u
+      * @param v Node v
+      * @param weight Vertex Weight
+      */
+     private void relax(Node u, Node v, int weight){
+    	 if (v.DistanceToMe > u.DistanceToMe + weight ){
+    		v.DistanceToMe = u.DistanceToMe + weight;
+    		v.Father = u;
+    	 }    	 
+     }
+     /**
+      * Sets the distance to all nodes equals "infinite" except by the starting node, also clears the marks for processing.
+      * @param start Node Start node.
+      */
+     private void InitializePathFind(Node start){
+    	 for(Node a: nodes){
+    		 if (a == start){
+    			a.DistanceToMe = 0;
+    			a.Father = null;
+    			a.mark = 0;
+    		 }else{
+    			a.DistanceToMe = 999999999;
+    			a.mark = 0;
+    		 }    		 
+    	 }    	 
+     }
+     /**
+      * Returns a String with the lowest weight Path between two nodes U and V. 
+      * @param u Node Name Start
+      * @param v Node Name Finish
+      * @return String with the Path and the Path Weight.
+      */
+     public String Djikstra(String u, String v){
+    	 Node start = getNodeByName(u);
+    	 Node finish = getNodeByName(v);
+    	 InitializePathFind(start);
+    	 Node x = null;
+    	 while(true){
+    		 x = getLower(nodes);
+    		 if (x == null){
+    			 break;
+    		 } 
+    		 x.mark = 1;
+    		 for(Vertex a : x.neighbors){
+    			 relax(x,a.node,a.weight);
+    		 }
+    	 }
+    	 
+    	 String aux = "";
+    	 int pathWeight = finish.DistanceToMe;
+    	 while(finish != null){
+    		 aux = " ->"+finish.label+" "+aux;
+    		 finish = finish.Father;
+    	 }
+    	 return aux+" Total Path Weight: "+ pathWeight;
+     }
+     
      /**
       * Returns a reference to a Node by providing it's label. Return null if the node does not exists.
       * 
@@ -279,7 +356,7 @@ public class Graph {
                  writer.write(a.label + "[label=\"Node: " + a.label + "\\nValor: " + a.data + "\"]\n");
                  for (Vertex b : a.neighbors)
                  {
-                     writer.write(a.label + " -> " + b.node.label+"\n");
+                     writer.write(a.label + " -> " + b.node.label+" [label=\""+b.weight+"\"];\n");
                  }
              }
 
@@ -297,7 +374,7 @@ public class Graph {
                  {
                      if (!b.node.printMark)
                      {
-                         writer.write(a.label + " -- " + b.node.label+"\n");
+                         writer.write(a.label + " -- " + b.node.label+" [label=\""+b.weight+"\"];\n");
                      }
                  }
                  a.printMark = true;

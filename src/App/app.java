@@ -39,6 +39,10 @@ public class app {
 		System.out.println("------ DFS ------");
 		System.out.println(g.DFSWalk("a"));
 		System.out.println("------ DFS ------");
+		
+		System.out.println("------ Djikstra ------");
+		System.out.println(g.Djikstra("a", "f"));
+		System.out.println("------ Djikstra ------");
 	}
 
 }
