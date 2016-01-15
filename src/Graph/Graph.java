@@ -353,10 +353,10 @@ public class Graph {
              writer.write("digraph "+name+" {\nrankdir = LR;\nnode [\nshape = ellipse,\nstyle = filled,\ncolor = \"#000000\",\nfillcolor = \"#FFFFFF\"];\n");
              for (Node a : nodes)
              {
-                 writer.write(a.label + "[label=\"Node: " + a.label + "\\nValor: " + a.data + "\"]\n");
+                 writer.write(("\""+a.label+"\"")  + "[label=\"Node: " + a.label + "\\nValor: " + a.data + "\"]\n");
                  for (Vertex b : a.neighbors)
                  {
-                     writer.write(a.label + " -> " + b.node.label+" [label=\""+b.weight+"\"];\n");
+                     writer.write(("\""+a.label+"\"")  + " -> " + ("\""+b.node.label+"\"") +" [label=\""+b.weight+"\"];\n");
                  }
              }
 
